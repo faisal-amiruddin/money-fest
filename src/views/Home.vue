@@ -1,7 +1,7 @@
 <template>
-  <div class="bg-black min-h-screen text-white w-screen relative right-20">
+  <div class="min-h-screen text-white w-screen relative right-20 bottom-10">
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-8">
+    <main class="container mx-auto px-8 py-8">
       <!-- Welcome Message -->
       <h2 class="text-2xl font-bold mb-6">Welcome Back, Naval!</h2>
 
