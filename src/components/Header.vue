@@ -20,11 +20,11 @@
           <!-- Modal Notifikasi -->
           <div
             v-if="showNotifModal"
-            class="absolute right-0 top-12 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+            class="absolute right-0 top-12 mt-2 w-80 bg-[#1E1E1E] rounded-lg shadow-xl border border-gray-600 z-50"
           >
             <!-- Header Modal -->
-            <div class="flex items-center justify-between p-4 border-b border-gray-200">
-              <h3 class="text-lg font-semibold text-gray-800">Notifikasi</h3>
+            <div class="flex items-center justify-between p-4 border-b border-gray-600">
+              <h3 class="text-lg font-semibold text-white">Notifikasi</h3>
               <button @click="closeNotifModal" class="text-gray-400 hover:text-gray-600">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -41,15 +41,15 @@
             <div class="max-h-96 overflow-y-auto">
               <!-- Pesan Belum Dibaca -->
               <div
-                class="p-4 border-b border-gray-100 bg-blue-50 hover:bg-blue-100 cursor-pointer transition-colors"
+                class="p-4 border-b border-gray-600 bg-[#1a263d] hover:bg-[#2d3455] cursor-pointer transition-colors"
               >
                 <div class="flex items-start gap-3">
                   <div class="flex-shrink-0">
                     <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                   </div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800">Pengingat Investasi</p>
-                    <p class="text-xs text-gray-600 mt-1">
+                    <p class="text-sm font-medium text-white">Pengingat Investasi</p>
+                    <p class="text-xs text-gray-500 mt-1">
                       Jangan lupa untuk berinvestasi hari ini. Konsistensi adalah kunci kesuksesan
                       finansial!
                     </p>
@@ -60,15 +60,15 @@
 
               <!-- Contoh pesan lain (opsional) -->
               <div
-                class="p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors"
+                class="p-4 border-b border-gray-600 hover:bg-[#2d3455] cursor-pointer transition-colors"
               >
                 <div class="flex items-start gap-3">
-                  <div class="flex-shrink-0">
+                  <div class="shrink-0">
                     <div class="w-2 h-2 bg-gray-300 rounded-full mt-2"></div>
                   </div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-gray-800">Tips Investasi</p>
-                    <p class="text-xs text-gray-600 mt-1">
+                    <p class="text-sm font-medium text-white">Tips Investasi</p>
+                    <p class="text-xs text-gray-500 mt-1">
                       Pelajari strategi investasi terbaru untuk meningkatkan portofolio Anda.
                     </p>
                     <p class="text-xs text-gray-400 mt-2">1 jam yang lalu</p>

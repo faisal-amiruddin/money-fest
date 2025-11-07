@@ -32,16 +32,16 @@
       <!-- Voucher Cards -->
       <div class="flex space-x-4 overflow-x-auto pb-6">
         <!-- Ultra Voucher -->
-        <img src="/public/voucher1.png" alt="">
+        <img src="/voucher1.png" alt="">
 
         <!-- MAP Gift Voucher -->
-         <img src="/public/voucher2.png" alt=""></img>
+         <img src="/voucher2.png" alt=""></img>
 
         <!-- Bonus Voucher -->
-         <img src="/public/voucher3.png" alt="">
+         <img src="/voucher3.png" alt="">
 
         <!-- Promo Mudik Murah -->
-         <img src="/public/voucher4.png" alt="">
+         <img src="/voucher4.png" alt="">
       </div>
 
       <!-- Carousel Indicators -->
