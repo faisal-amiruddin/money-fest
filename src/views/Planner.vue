@@ -1,7 +1,7 @@
 <template>
   <div>
     <BackButton />
-    <h1>Planner Page</h1>
+    <h1 class="font-bold">Planner</h1>
   </div>
 </template>
 

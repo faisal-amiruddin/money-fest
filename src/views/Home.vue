@@ -1,13 +1,3 @@
-<<<<<<< Updated upstream
-<script setup>
-import Header from './components/Header.vue'
-</script>
-
-@@ -6,3 +7,105 @@ import Header from './components/Header.vue'
-  <Header />
-  <router-view />
-</template>
-=======
 <template>
   <div class="bg-black min-h-screen text-white">
  
@@ -108,4 +98,3 @@ export default {
   }
 }
 </script>
->>>>>>> Stashed changes
