@@ -31,7 +31,7 @@
         <div class="flex items-center space-x-2 relative right-20">
           <div class="w-px h-16 bg-gray-700 relative right-8"></div>
           <div class="flex items-center space-x-2">
-            <img class="w-12" src="/public/coin.png" alt="" />
+            <img class="w-12" src="/coin.png" alt="" />
             <div>
               <p class="text-xs text-gray-400">Koin</p>
               <p class="text-lg font-bold">1,250</p>

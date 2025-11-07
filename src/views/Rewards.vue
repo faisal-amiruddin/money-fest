@@ -9,7 +9,7 @@
 
       <!-- Coin Balance -->
       <div class="flex items-center space-x-2">
-        <img class="w-8" src="/public/coin.png" alt="Coin Icon" />
+        <img class="w-8" src="/coin.png" alt="Coin Icon" />
         <span class="text-xl font-semibold">1.250</span>
       </div>
     </div>
@@ -91,10 +91,10 @@ import BackButton from "@/components/BackButton.vue";
 import { ref, onMounted } from "vue";
 
 const vouchers = [
-  "/public/voucher1.png",
-  "/public/voucher2.png",
-  "/public/voucher3.png",
-  "/public/voucher4.png",
+  "/voucher1.png",
+  "/voucher2.png",
+  "/voucher3.png",
+  "/voucher4.png",
 ];
 
 const carousel = ref(null);
