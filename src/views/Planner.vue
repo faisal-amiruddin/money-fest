@@ -51,6 +51,43 @@
       </div>
     </div>
 
+    <!-- Pie Chart Section -->
+    <div class="mb-15">
+      <h2 class="text-xl mb-4">Distribusi Pengeluaran</h2>
+      <div class="bg-[#1E1E1E] rounded-2xl p-6">
+        <div class="flex flex-col md:flex-row gap-6 items-center">
+          <div class="w-full md:w-1/2">
+            <canvas ref="pieChart" class="h-64"></canvas>
+          </div>
+          <div class="w-full md:w-1/2">
+            <div class="space-y-3">
+              <div v-for="(budget, category) in budgets" :key="category" class="flex items-center">
+                <div 
+                  class="w-4 h-4 rounded-full mr-3" 
+                  :style="{ backgroundColor: getChartColor(category) }"
+                ></div>
+                <div class="flex-1">
+                  <div class="flex justify-between">
+                    <span class="text-gray-300">{{ category }}</span>
+                    <span>Rp {{ formatAmount(budget.spent) }}</span>
+                  </div>
+                  <div class="w-full bg-gray-700 h-2 rounded-full mt-1">
+                    <div 
+                      class="h-2 rounded-full"
+                      :style="{ 
+                        width: (totalSpent > 0 ? (budget.spent / totalSpent) * 100 : 0) + '%',
+                        backgroundColor: getChartColor(category)
+                      }"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Anggaran Bulan Ini -->
     <div class="mb-15">
       <h2 class="text-xl mb-4">Anggaran Bulan Ini</h2>
@@ -268,6 +305,9 @@
 
 <script>
 import BackButton from '@/components/BackButton.vue'
+import { Chart, registerables } from 'chart.js'
+
+Chart.register(...registerables)
 
 export default {
   name: 'Planner',
@@ -300,12 +340,32 @@ export default {
           spent: 550000,
           limit: 500000
         }
-      }
+      },
+      pieChartInstance: null
     }
   },
   computed: {
     savingsPercentage() {
       return Math.min(Math.round((this.savings.current / this.savings.target) * 100), 100);
+    },
+    totalSpent() {
+      return Object.values(this.budgets).reduce((total, budget) => total + budget.spent, 0);
+    }
+  },
+  mounted() {
+    this.renderPieChart();
+  },
+  beforeUnmount() {
+    if (this.pieChartInstance) {
+      this.pieChartInstance.destroy();
+    }
+  },
+  watch: {
+    budgets: {
+      handler() {
+        this.renderPieChart();
+      },
+      deep: true
     }
   },
   methods: {
@@ -385,6 +445,69 @@ export default {
       if (percentage <= 33) return '/aman.png';
       if (percentage <= 67) return '/danger-icon.png';
       return '/warning-icon.png';
+    },
+    getChartColor(category) {
+      const colors = {
+        'Transportasi': '#4ade80', // green-400
+        'Makan & Minum': '#fbbf24', // amber-400
+        'Hiburan': '#f87171' // red-400
+      };
+      return colors[category] || '#9ca3af'; // gray-400 default
+    },
+    renderPieChart() {
+      const ctx = this.$refs.pieChart;
+      if (!ctx) return;
+      
+      // Hancurkan chart sebelumnya jika ada
+      if (this.pieChartInstance) {
+        this.pieChartInstance.destroy();
+      }
+      
+      // Siapkan data
+      const labels = Object.keys(this.budgets);
+      const data = labels.map(category => this.budgets[category].spent);
+      const backgroundColors = labels.map(category => this.getChartColor(category));
+      
+      // Buat chart baru
+      this.pieChartInstance = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: backgroundColors,
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false
+            },
+            tooltip: {
+              backgroundColor: '#1E1E1E',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              borderColor: '#3C3C3C',
+              borderWidth: 1,
+              padding: 12,
+              callbacks: {
+                label: (context) => {
+                  const label = context.label || '';
+                  const value = context.raw || 0;
+                  const percentage = this.totalSpent > 0 
+                    ? ((value / this.totalSpent) * 100).toFixed(1) 
+                    : '0.0';
+                  return `${label}: Rp ${this.formatAmount(value)} (${percentage}%)`;
+                }
+              }
+            }
+          },
+          cutout: 0
+        }
+      });
     }
   }
 }
@@ -435,5 +558,10 @@ h1, h2, h3, p, td, th, label {
 .toast-leave-to {
   opacity: 0;
   transform: translateX(100%);
+}
+
+/* Pie Chart Container */
+canvas {
+  max-height: 256px;
 }
 </style>
