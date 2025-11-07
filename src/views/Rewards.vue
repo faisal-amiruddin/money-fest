@@ -17,35 +17,21 @@
     <!-- Voucher Section Title -->
     <h2 class="text-xl font-semibold mb-6">Voucher Diskon Tersedia</h2>
 
-    <!-- Infinite Carousel -->
-    <div class="relative w-full mb-9 overflow-visible ">
-      <div
-        ref="carousel"
-        class="flex space-x-4 overflow-x-auto  no-scrollbar scroll-smooth snap-x snap-mandatory"
-        @scroll="handleScroll"
-      >
-        <!-- Clone terakhir di awal -->
-        <img
-          :src="vouchers[vouchers.length - 1]"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl"
-          alt=""
-        />
+    <!-- Voucher Cards Carousel -->
+    <div class="relative">
+      <!-- Voucher Cards -->
+      <div class="flex space-x-4 overflow-x-auto pb-6">
+        <!-- Ultra Voucher -->
+        <img src="/public/voucher1.png" alt="">
 
-        <!-- Gambar Asli -->
-        <img
-          v-for="(img, i) in vouchers"
-          :key="i"
-          :src="img"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl transition-transform duration-300 hover:scale-105 hover:z-10"
-          alt="voucher image"
-        />
+        <!-- MAP Gift Voucher -->
+         <img src="/public/voucher2.png" alt=""></img>
 
-        <!-- Clone pertama di akhir -->
-        <img
-          :src="vouchers[0]"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl"
-          alt=""
-        />
+        <!-- Bonus Voucher -->
+         <img src="/public/voucher3.png" alt="">
+
+        <!-- Promo Mudik Murah -->
+         <img src="/public/voucher4.png" alt="">
       </div>
 
       <!-- Indicators -->
