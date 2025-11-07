@@ -44,29 +44,37 @@
 
         <!-- Challenge & Achievement -->
         <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-[#1E1E1E] rounded-2xl p-6">
-            <h2 class="text-lg mb-2">Challenge</h2>
-            <p class="text-gray-400 mb-3">Konsisten Investasi</p>
-            <button class="text-green-400 flex items-center">
-              Lihat Detail →
-              <i class="fa-solid fa-arrow-right ml-2"></i>
-            </button>
+          <div class="bg-[#1E1E1E] rounded-2xl p-6 self-center">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg mb-2">Challenge</h2>
+                    <p class="text-gray-400 mb-3">Konsisten Investasi</p>
+                </div>
+                <div>
+                    <button class="text-white flex items-center bg-[#383838] p-2 rounded-full px-4 text-xs">
+                      Lihat Detail
+                      <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
           </div>
 
-          <div class="bg-[#1E1E1E] rounded-2xl p-6">
-            <h2 class="text-lg mb-2">Achievement</h2>
-            <p class="text-gray-400 mb-3">Earned Plonir Reksadana</p>
-            <div class="flex items-center">
-              <div class="bg-yellow-500 rounded-full p-2">
-                <i class="fa-solid fa-trophy text-2xl text-yellow-900"></i>
-              </div>
+          <div class="bg-[#1E1E1E] rounded-2xl p-6 self-center">
+            <div class="flex justify-between">
+                <div>
+                    <h2 class="text-lg mb-2">Achievement</h2>
+                    <p class="text-yellow-500 mb-3">Earned Plonir Reksadana</p>
+                </div>
+                <div class="w-12">
+                    <img src="/archive-x.png" alt="">
+                </div>
             </div>
           </div>
         </div>
 
         <!-- Market Graph -->
         <div class="bg-[#1E1E1E] rounded-2xl p-6">
-          <h2 class="text-xl mb-4">Grafik Pasar (CDIA)</h2>
+          <h2 class="text-xl mb-4">Grafik Pasar (IHSG)</h2>
           <div id="tv_chart" style="height:400px;"></div>
         </div>
 
@@ -78,20 +86,20 @@
 
         <!-- Portfolio -->
         <div class="bg-[#1E1E1E] rounded-2xl p-6">
-          <h2 class="text-xl mb-4">Portofolio Saya (ETF Banking)</h2>
+          <h2 class="text-xl mb-4">Portofolio Saya</h2>
           <div class="space-y-3">
             <div v-for="item in portfolio" :key="item.id" class="flex justify-between items-center p-3 rounded-xl bg-[#2C2C2C]">
               <div class="flex items-center">
                 <div :class="`w-6 h-6 rounded-full flex items-center justify-center text-white mr-3 ${item.color}`">
-                  {{ item.id }}
+                  {{ item.symbol.charAt(0) }}
                 </div>
                 <div>
-                  <p class="font-medium">{{ item.name }}</p>
+                  <p class="font-medium">{{ item.name }} ({{ item.symbol }})</p>
                   <p class="text-sm text-gray-400">Nilai: Rp {{ formatAmount(item.value) }}</p>
                 </div>
               </div>
-              <div :class="item.change.includes('+') ? 'text-green-400' : 'text-red-400'">
-                {{ item.change }}
+              <div :class="item.change >= 0 ? 'text-green-400' : 'text-red-400'">
+                {{ item.change >= 0 ? '+' : '' }}{{ item.change }}%
               </div>
             </div>
           </div>
@@ -121,19 +129,26 @@
           <div class="space-y-3">
             <div>
               <label class="block text-sm text-gray-400 mb-1">Aset</label>
-              <select v-model="selectedAsset" class="w-full bg-[#2C2C2C] border border-gray-600 rounded-lg px-4 py-2">
-                <option value="x" selected>Pilih Aset...</option>
-                <option v-for="etf in portfolio" :value="etf.id">{{ etf.name }}</option>
+              <select v-model="selectedAsset" class="w-full bg-[#2C2C2C] border border-gray-600 rounded-lg px-4 py-2 appearance-none">
+                <option value="" disabled selected hidden>Pilih Aset...</option>
+                <option v-for="stock in stocks" :key="stock.symbol" :value="stock.symbol">{{ stock.name }} ({{ stock.symbol }})</option>
               </select>
+              <div class="absolute right-4 top-10 pointer-events-none">
+                <i class="fa-solid fa-chevron-down text-gray-500"></i>
+              </div>
             </div>
 
             <div>
-              <label class="block text-sm text-gray-400 mb-1">Jumlah (Rp)</label>
-              <input type="number" v-model="investmentAmount" class="w-full bg-[#2C2C2C] border border-gray-600 rounded-lg px-4 py-2">
+              <label class="block text-sm text-gray-400 mb-1">Jumlah (Lembar)</label>
+              <input type="number" v-model="investmentAmount" min="1" class="w-full bg-[#2C2C2C] border border-gray-600 rounded-lg px-4 py-2">
             </div>
 
             <button 
-              :class="activeTab === 'beli' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600'"
+              :disabled="!selectedAsset || !investmentAmount"
+              :class="[
+                activeTab === 'beli' ? 'bg-green-500 hover:bg-green-600' : 'bg-red-500 hover:bg-red-600',
+                (!selectedAsset || !investmentAmount) ? 'opacity-50 cursor-not-allowed' : ''
+              ]"
               class="w-full text-white py-2 rounded-lg transition-colors"
             >
               {{ activeTab === 'beli' ? 'Beli Sekarang' : 'Jual Sekarang' }}
@@ -156,14 +171,50 @@ export default {
     return {
       activeTab: 'beli',
       selectedAsset: '',
-      investmentAmount: 0,
+      investmentAmount: null,
       savings: { current: 275000000, target: 500000000 },
       diversificationScore: 85,
 
+      // Real Indonesian stock data
+      stocks: [
+        { symbol: 'BBCA', name: 'Bank Central Asia Tbk' },
+        { symbol: 'BBRI', name: 'Bank Rakyat Indonesia Tbk' },
+        { symbol: 'BMRI', name: 'Bank Mandiri Tbk' },
+        { symbol: 'TLKM', name: 'Telekomunikasi Indonesia Tbk' },
+        { symbol: 'ASII', name: 'Astra International Tbk' },
+        { symbol: 'UNVR', name: 'Unilever Indonesia Tbk' },
+        { symbol: 'PGAS', name: 'Perusahaan Gas Negara Tbk' },
+        { symbol: 'ANTM', name: 'Aneka Tambang Tbk' },
+        { symbol: 'PTBA', name: 'Bukit Asam Tbk' },
+        { symbol: 'INDF', name: 'Indofood Sukses Makmur Tbk' }
+      ],
+      
+      // Portfolio with real stock data
       portfolio: [
-        { id: 'XBNK', name: 'ETF Bank Indonesia XBNK', value: 3500000, change: '+2.40%', color: 'bg-green-500' },
-        { id: 'XFIN', name: 'ETF Finance XFIN', value: 1200000, change: '+1.15%', color: 'bg-blue-500' },
-        { id: 'XPLT', name: 'ETF Likuiditas XPLT', value: 500000, change: '-0.85%', color: 'bg-pink-500' }
+        { 
+          id: 1, 
+          symbol: 'BBCA', 
+          name: 'Bank Central Asia Tbk', 
+          value: 35000000, 
+          change: 2.40, 
+          color: 'bg-blue-500' 
+        },
+        { 
+          id: 2, 
+          symbol: 'BBRI', 
+          name: 'Bank Rakyat Indonesia Tbk', 
+          value: 12000000, 
+          change: 1.15, 
+          color: 'bg-red-500' 
+        },
+        { 
+          id: 3, 
+          symbol: 'BMRI', 
+          name: 'Bank Mandiri Tbk', 
+          value: 5000000, 
+          change: -0.85, 
+          color: 'bg-green-500' 
+        }
       ]
     }
   },
@@ -173,12 +224,12 @@ export default {
     }
   },
   mounted() {
-    // Chart CDIA
+    // Chart IHSG
     new TradingView.widget({
       container_id: "tv_chart",
       width: "100%",
       height: 400,
-      symbol: "IDX:CDIA",
+      symbol: "IDX:COMPOSITE", // IHSG index
       interval: "D",
       timezone: "Asia/Jakarta",
       theme: "dark",
@@ -202,18 +253,20 @@ export default {
       "symbolsGroups": [
         {
           "name": "Saham Indonesia",
+          "originalName": "Indonesia Stocks",
           "symbols": [
             { "name": "IDX:BBCA" },
             { "name": "IDX:BBRI" },
-            { "name": "IDX:BRMS" },
+            { "name": "IDX:BMRI" },
+            { "name": "IDX:TLKM" },
+            { "name": "IDX:ASII" },
+            { "name": "IDX:UNVR" },
             { "name": "IDX:ANTM" },
-            { "name": "IDX:CDIA" },
-            { "name": "IDX:ADRO" },
-            { "name": "IDX:INET" },
-            { "name": "IDX:CUAN" }
+            { "name": "IDX:PGAS" }
           ]
         }
-      ]
+      ],
+      "market": "indonesia"
     }`;
     document.getElementById("tv_market_widget").appendChild(script);
   },
@@ -233,5 +286,18 @@ h1, h2, h3, p, td, th, label {
 @media (max-width: 768px) {
   .flex { flex-direction: column; }
   .w-80 { width: 100%; }
+}
+
+/* Custom select styling */
+select {
+  position: relative;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%236b7280' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
+  background-size: 1.5em 1.5em;
 }
 </style>
