@@ -59,7 +59,7 @@
           <div class="w-full md:w-1/2">
             <canvas ref="pieChart" class="h-64"></canvas>
           </div>
-          <div class="w-full md:w-1/2">
+          <div class="w-full md:w-1/2 mr-20">
             <div class="space-y-3">
               <div v-for="(budget, category) in budgets" :key="category" class="flex items-center">
                 <div 
