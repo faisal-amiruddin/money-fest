@@ -1,3 +1,4 @@
+import Edukasi from '@/views/Edukasi.vue'
 import Home from '@/views/Home.vue'
 import Investasi from '@/views/Investasi.vue'
 import Planner from '@/views/Planner.vue'
@@ -11,6 +12,7 @@ const router = createRouter({
     { path: '/planner', component: Planner },
     { path: '/investasi', component: Investasi },
     { path: '/rewards', component: Rewards },
+    { path: '/edukasi', component: Edukasi },
   ],
 })
 
