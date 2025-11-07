@@ -289,7 +289,7 @@ export default {
       },
       budgets: {
         'Transportasi': {
-          spent: 400000,
+          spent: 150000,
           limit: 500000
         },
         'Makan & Minum': {

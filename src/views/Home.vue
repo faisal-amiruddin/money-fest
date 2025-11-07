@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen text-white w-screen relative right-20 bottom-10">
+  <div class="text-white pt-35">
     <!-- Main Content -->
     <main class="container mx-auto px-8 py-8">
       <!-- Welcome Message -->
@@ -15,9 +15,7 @@
             </p>
 
             <!-- Progress bar -->
-            <div
-              class="w-220 h-4 bg-gray-700 rounded-full mt-2 relative overflow-hidden"
-            >
+            <div class="w-220 h-4 bg-gray-700 rounded-full mt-2 relative overflow-hidden">
               <div
                 class="h-full bg-green-500 rounded-full transition-all duration-[1500ms] ease-out"
                 :style="{ width: progress + '%' }"
@@ -42,29 +40,18 @@
         </div>
       </div>
 
-      <!-- Feature Cards -->
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
-      >
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-6">
         <div
           v-for="(card, index) in cards"
           :key="card.title"
-          class="bg-[#1E1E1E] rounded-xl p-6 shadow-lg transition-all duration-500 ease-out cursor-pointer"
-          :class="[card.hover, showCards ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8']"
-          :style="{ transitionDelay: (index * 150) + 'ms' }"
+          :style="{ transitionDelay: index * 120 + 'ms', animationDelay: index * 120 + 'ms' }"
+          class="bg-[#1E1E1E] rounded-xl p-6 shadow-lg cursor-pointer transition-all duration-500 ease-out opacity-0 translate-y-6 hover:scale-[1.03]"
+          :class="[showCards ? 'opacity-100 translate-y-0 animate-bounceIn' : '', card.glow]"
         >
-          <a :href="card.link">
-            <div class="flex justify-between items-start mb-5">
-              <img
-                :src="card.icon"
-                :class="card.imgClass"
-                alt=""
-              />
-              <img class="w-9 relative right-2 bottom-" src="/public/arrow-icon.png" alt="" />
-            </div>
-            <h3 :class="card.textClass" class="text-xl font-semibold text-white relative top-">
-              {{ card.title }}
-            </h3>
+          <a :href="card.link" class="block relative text-center">
+            <i class="fa-solid fa-arrow-up-right-from-square text-xl absolute top-0 right-0"></i>
+            <i :class="card.icon" class="text-8xl mb-4 text-[#22C55E]"></i>
+            <h3 class="text-lg font-semibold mt-2">{{ card.title }}</h3>
           </a>
         </div>
       </div>
@@ -82,35 +69,27 @@ export default {
       cards: [
         {
           title: 'Planner',
-          icon: '/public/planner-icon.png',
           link: '/planner',
-          hover: 'hover:shadow-[0_0_25px_rgba(236,72,153,0.3)] hover:scale-[1.02]',
-          imgClass: 'px-16 py-4 w-194 relative top-',
-          textClass: 'px-18 relative bottom-12 ',
+          icon: 'fa-solid fa-calendar-check',
+          glow: 'hover:shadow-pink-500/40',
         },
         {
           title: 'Edukasi',
-          icon: '/public/Edukasi-icon.png',
           link: '/edukasi',
-          hover: 'hover:shadow-[0_0_25px_rgba(59,130,246,0.3)] hover:scale-[1.02]',
-          imgClass: 'w-200 py-4',
-          textClass: 'relative bottom-13 left-23',
+          icon: 'fa-solid fa-graduation-cap',
+          glow: 'hover:shadow-blue-500/40',
         },
         {
           title: 'Investasi',
-          icon: '/public/investasi-icon.png',
           link: '/investasi',
-          hover: 'hover:shadow-[0_0_25px_rgba(16,185,129,0.3)] hover:scale-[1.02]',
-          imgClass: 'relative left-15',
-          textClass: 'relative bottom-8 left-21',
+          icon: 'fa-solid fa-chart-line',
+          glow: 'hover:shadow-green-500/40',
         },
         {
           title: 'Rewards',
-          icon: '/public/reward-icon.png',
           link: '/rewards',
-          hover: 'hover:shadow-[0_0_25px_rgba(250,204,21,0.3)] hover:scale-[1.02]',
-          imgClass: 'relative top-7 left-6',
-          textClass: 'relative left-22',
+          icon: 'fa-solid fa-gift',
+          glow: 'hover:shadow-yellow-500/40',
         },
       ],
     }
@@ -128,27 +107,23 @@ export default {
   },
 }
 </script>
-<<<<<<< Updated upstream
-=======
 
-<style scoped>
-/* Animasi bounce lembut saat card muncul */
-div[class*="translate-y-0"] {
-  animation: bounceIn 0.6s ease-out;
-}
-
+<style>
 @keyframes bounceIn {
   0% {
-    transform: translateY(10px);
-    opacity: 0.6;
+    transform: translateY(12px);
+    opacity: 0;
   }
   60% {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
     opacity: 1;
   }
   100% {
     transform: translateY(0);
   }
 }
+
+.animate-bounceIn {
+  animation: bounceIn 0.6s ease-out;
+}
 </style>
->>>>>>> Stashed changes
