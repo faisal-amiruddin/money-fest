@@ -48,11 +48,11 @@
           class="bg-[#1E1E1E] rounded-xl p-6 shadow-lg cursor-pointer transition-all duration-500 ease-out opacity-0 translate-y-6 hover:scale-[1.03]"
           :class="[showCards ? 'opacity-100 translate-y-0 animate-bounceIn' : '', card.glow]"
         >
-          <a :href="card.link" class="block relative text-center">
+          <router-link :to="card.link" class="block relative text-center">
             <i class="fa-solid fa-arrow-up-right-from-square text-xl absolute top-0 right-0"></i>
             <i :class="card.icon" class="text-8xl mb-4 text-[#22C55E]"></i>
             <h3 class="text-lg font-semibold mt-2">{{ card.title }}</h3>
-          </a>
+          </router-link>
         </div>
       </div>
     </main>
