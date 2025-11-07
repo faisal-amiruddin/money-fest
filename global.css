@@ -2,3 +2,8 @@
 body {
     font-family: 'Secular One';
 }
+
+@keyframes progressGrow {
+  0% { width: 0%; }
+  100% { width: 70%; } 
+}

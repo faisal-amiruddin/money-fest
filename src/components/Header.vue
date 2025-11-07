@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-[#1E1E1E] text-white mb-10">
+  <header class="bg-[#1E1E1E] text-white mb-10 fixed w-full">
     <nav class="max-w-7xl mx-auto flex items-center justify-between py-3">
       <!-- Logo -->
       <router-link to="/" class="flex items-center gap-2">
