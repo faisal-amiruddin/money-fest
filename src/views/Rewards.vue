@@ -4,64 +4,66 @@
     <BackButton />
 
     <div class="flex justify-between items-center py-20">
-      <!-- Title -->
       <h1 class="text-3xl font-bold">Rewards dan Voucher</h1>
-
-      <!-- Coin Balance -->
       <div class="flex items-center space-x-2">
         <img class="w-8" src="/coin.png" alt="Coin Icon" />
         <span class="text-xl font-semibold">1.250</span>
       </div>
     </div>
 
-    <!-- Voucher Section Title -->
     <h2 class="text-xl font-semibold mb-6">Voucher Diskon Tersedia</h2>
 
-    <!-- Infinite Carousel -->
-    <div class="relative w-full mb-9 overflow-visible ">
-      <div
-        ref="carousel"
-        class="flex space-x-4 overflow-x-auto  no-scrollbar scroll-smooth snap-x snap-mandatory"
-        @scroll="handleScroll"
+    <!-- Carousel -->
+    <div class="relative w-full mb-9 overflow-visible">
+      <!-- Tombol kiri -->
+      <button
+        @click="scrollLeft"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-3 rounded-full"
       >
-        <!-- Clone terakhir di awal -->
-        <img
-          :src="vouchers[vouchers.length - 1]"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl"
-          alt=""
-        />
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
 
-        <!-- Gambar Asli -->
-        <img
+      <!-- Isi Carousel -->
+      <div ref="carousel" class="flex gap-4 overflow-x-scroll no-scrollbar scroll-smooth">
+        <div
           v-for="(img, i) in vouchers"
           :key="i"
-          :src="img"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl transition-transform duration-300 hover:scale-105 hover:z-10"
-          alt="voucher image"
-        />
-
-        <!-- Clone pertama di akhir -->
-        <img
-          :src="vouchers[0]"
-          class="carousel-item snap-start flex-shrink-0 w-80 rounded-xl"
-          alt=""
-        />
+          class="carousel-item flex-shrink-0 w-80 flex justify-center"
+        >
+          <img
+            :src="img"
+            alt="voucher"
+            class="w-80 rounded-xl transition-transform duration-300 hover:scale-105"
+          />
+        </div>
       </div>
 
-      <!-- Indicators -->
-      <div class="flex justify-center mt-6 space-x-2">
-        <div
-          v-for="(img, i) in vouchers.length"
-          :key="i"
-          :class="[
-            'w-2.5 h-2.5 rounded-full transition-all duration-300',
-            activeIndex === i ? 'bg-white scale-125' : 'bg-gray-500 scale-100',
-          ]"
-        ></div>
-      </div>
+      <!-- Tombol kanan -->
+      <button
+        @click="scrollRight"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-40 hover:bg-opacity-60 text-white p-3 rounded-full"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
     </div>
 
-    <!-- Exchange Button -->
+    <!-- Indikator (5 titik dinamis) -->
+    <div class="flex justify-center mt-6 space-x-2">
+      <div
+        v-for="i in 5"
+        :key="i"
+        :class="[
+          'w-2.5 h-2.5 rounded-full transition-all duration-300',
+          getIndicatorClass(i - 1)
+        ]"
+      ></div>
+    </div>
+
+    <!-- Tombol Tukar -->
     <div class="mt-12 flex justify-center">
       <button
         class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-full flex items-center space-x-2 transition-colors"
@@ -95,49 +97,48 @@ const vouchers = [
   "/voucher2.png",
   "/voucher3.png",
   "/voucher4.png",
+  "/voucher5.jpg",
+  "/voucher6.jpg",
+  "/voucher7.jpg"
 ];
 
 const carousel = ref(null);
 const activeIndex = ref(0);
-let isAdjusting = false; // cegah bug geter saat scroll diubah manual
 
-const handleScroll = () => {
+// Geser kanan
+const scrollRight = () => {
   const container = carousel.value;
-  const itemWidth = container.children[0].offsetWidth + 16; // lebar item + gap
-  const scrollLeft = container.scrollLeft;
-  const totalWidth = itemWidth * (vouchers.length + 2); // clone depan & belakang
+  const itemWidth = container.children[0].offsetWidth + 16;
+  container.scrollBy({ left: itemWidth, behavior: "smooth" });
+  activeIndex.value = Math.min(activeIndex.value + 1, vouchers.length - 1);
+};
 
-  if (isAdjusting) return; // cegah looping geter
-  isAdjusting = true;
+// Geser kiri
+const scrollLeft = () => {
+  const container = carousel.value;
+  const itemWidth = container.children[0].offsetWidth + 16;
+  container.scrollBy({ left: -itemWidth, behavior: "smooth" });
+  activeIndex.value = Math.max(activeIndex.value - 1, 0);
+};
 
-  // Update indikator
-  let index = Math.round(scrollLeft / itemWidth) - 1;
-  if (index < 0) index = vouchers.length - 1;
-  if (index >= vouchers.length) index = 0;
-  activeIndex.value = index;
+// Indikator tetap 5, tapi aktifnya dinamis
+const getIndicatorClass = (i) => {
+  const visibleDots = 5;
+  const start = Math.floor(activeIndex.value / visibleDots) * visibleDots;
+  const end = start + visibleDots;
 
-  // Looping tanpa "mental"
-  if (scrollLeft <= 0) {
-    container.scrollLeft = itemWidth * vouchers.length;
-  } else if (scrollLeft >= totalWidth - itemWidth) {
-    container.scrollLeft = itemWidth;
-  }
-
-  // Sedikit delay biar smooth
-  setTimeout(() => {
-    isAdjusting = false;
-  }, 100);
+  const relativeIndex = activeIndex.value - start;
+  return relativeIndex === i
+    ? "bg-white scale-125"
+    : "bg-gray-500 scale-100";
 };
 
 onMounted(() => {
-  // Mulai dari gambar pertama (bukan clone)
-  const firstItem = carousel.value.children[0];
-  carousel.value.scrollLeft = firstItem.offsetWidth + 16;
+  carousel.value.scrollLeft = 0;
 });
 </script>
 
 <style scoped>
-/* Hilangkan scrollbar */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -145,8 +146,6 @@ onMounted(() => {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
-/* Hover voucher biar gak kepotong */
 .carousel-item {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   transform-origin: center;
