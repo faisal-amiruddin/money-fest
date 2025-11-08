@@ -92,7 +92,7 @@
         <div class="w-full h-4 bg-gray-700 rounded-full">
           <div class="h-full bg-green-500 rounded-full" style="width: 40%"></div>
         </div>
-        <div class="text-xs text-white-400 mt-1 relative bottom-5 left-95">4 kuis terjawab</div>
+        <div class="text-xs text-white-400 mt-1 relative bottom-5 left-95 w-50">4 kuis terjawab</div>
       </div>
 
       <button
