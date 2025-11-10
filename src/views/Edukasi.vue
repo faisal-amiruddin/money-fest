@@ -26,7 +26,7 @@
        style="animation-delay: 0.1s">
         <div class="flex flex-col items-center py-3">
           <div class="w-45 h-45">
-            <img src="/public/tabungan-icon.png" alt="">
+            <img src="/tabungan-icon.png" alt="">
           </div>
           <h3 class="text-black font-bold text-center text-4xl">Financial <br> Fundamentals</h3>
         </div>
@@ -46,7 +46,7 @@
        style="animation-delay: 0.3s">
         <div class="flex flex-col items-center py-1">
           <div class="w-50 h-50">
-            <img src="/public/invest-icon.png" alt="">
+            <img src="/invest-icon.png" alt="">
           </div>
           <h3 class="text-black font-bold text-center text-4xl relative bottom-5">Investasi & <br> Kekayaan</h3>
         </div>
@@ -63,7 +63,7 @@
        style="animation-delay: 0.5s">
         <div class="flex flex-col items-center py-1">
           <div class="w-50 h-50 ">
-            <img src="/public/akademi-icon.png" alt="">
+            <img src="/akademi-icon.png" alt="">
           </div>
           <h3 class="text-black font-bold text-center text-4xl relative bottom-5">Akademi <br> Financial</h3>
         </div>
@@ -85,7 +85,7 @@
           <h3 class="text-lg font-bold">Kuis Mingguan</h3>
           <p class="text-gray-400 mt-1">Uji pengetahuan Anda minggu ini.</p>
         </div>
-        <img class="w-10 h-10" src="/public/trophy.png" alt="">
+        <img class="w-10 h-10" src="/trophy.png" alt="">
       </div>
 
       <div class="mb-4">
