@@ -45,7 +45,7 @@
           <i class="fa-solid fa-trophy text-yellow-500 text-3xl mr-3"></i>
           <div>
             <p class="text-gray-400 text-sm">Challenge Aktif</p>
-            <p class="text-lg">Hemat Kopi</p>
+            <p class="text-md">{{ currentChallenge }}</p>
           </div>
         </div>
       </div>
@@ -327,6 +327,13 @@ export default {
         current: 3500000,
         target: 5000000
       },
+      challenges: [
+        "Ga beli kopi tapi investasi",
+        "Ga hiling tapi investasi",
+        "Duit nganggur tapi kita investasikan",
+        "No alkohol no dugem, yes for investasi"
+      ],
+      currentChallenge: "",
       budgets: {
         'Transportasi': {
           spent: 150000,
@@ -353,6 +360,7 @@ export default {
     }
   },
   mounted() {
+    this.setRandomChallenge();
     this.renderPieChart();
   },
   beforeUnmount() {
@@ -374,6 +382,10 @@ export default {
     },
     closeModal() {
       this.showModal = false;
+    },
+    setRandomChallenge() {
+      const randomIndex = Math.floor(Math.random() * this.challenges.length);
+      this.currentChallenge = this.challenges[randomIndex];
     },
     addTransaction() {
       // Validasi form
