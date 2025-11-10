@@ -28,12 +28,13 @@
       <!-- Isi Carousel -->
       <div ref="carousel" class="flex gap-4 overflow-x-scroll no-scrollbar scroll-smooth">
         <div
-          v-for="(img, i) in vouchers"
+          v-for="(voucher, i) in vouchers"
           :key="i"
-          class="carousel-item flex-shrink-0 w-80 flex justify-center"
+          class="carousel-item flex-shrink-0 w-80 flex justify-center cursor-pointer"
+          @click="openModal(voucher)"
         >
           <img
-            :src="img"
+            :src="voucher.image"
             alt="voucher"
             class="w-80 rounded-xl transition-transform duration-300 hover:scale-105"
           />
@@ -85,6 +86,34 @@
         </svg>
       </button>
     </div>
+
+    <!-- MODAL DETAIL VOUCHER -->
+    <Transition name="fade-zoom"> 
+    <div
+          v-if="selectedVoucher"
+          class="fixed inset-0 bg-[#3b3b3b8e] flex items-center justify-center z-50"
+          @click.self="closeModal"
+        >
+      <div class="bg-[#1E1E1E] text-white p-6 rounded-2xl w-96 shadow-lg">
+        <h2 class="text-2xl font-bold mb-3 text-center">{{ selectedVoucher.title }}</h2>
+        <img
+          :src="selectedVoucher.image"
+          alt="voucher"
+          class="rounded-lg mb-4 w-full h-full object-cover"
+        />
+        <p class="text-white-600 mb-4 text-center">{{ selectedVoucher.desc }}</p>
+
+        <div class="flex justify-center">
+          <button
+            @click="closeModal"
+            class="bg-green-600 hover:bg-green-800 text-white px-6 py-2 rounded-lg transition"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+    </Transition>  
   </div>
 </template>
 
@@ -93,17 +122,55 @@ import BackButton from "@/components/BackButton.vue";
 import { ref, onMounted } from "vue";
 
 const vouchers = [
-  "/voucher1.png",
-  "/voucher2.png",
-  "/voucher3.png",
-  "/voucher4.png",
-  "/voucher5.jpg",
-  "/voucher6.jpg",
-  "/voucher7.jpg"
+  {
+    image: "/voucher1.png",
+    title: "Kuota Voucher",
+    desc: "Nikmati diskon 30% untuk pembelian paket data, SMS, dan telepon semua operator. Berlaku untuk semua provider utama seperti Telkomsel, Indosat, XL, dan Tri. Penukaran voucher dapat dilakukan langsung di aplikasi mitra telekomunikasi pilihanmu.",
+  },
+  {
+    image: "/voucher2.png",
+    title: "Ultra Voucher",
+    desc: "Dapatkan potongan 10% untuk berbelanja di lebih dari 500 merchant favorit, mulai dari restoran, fashion, hingga hiburan. Voucher ini bisa digunakan langsung melalui aplikasi Ultra Voucher tanpa minimal pembelian.",
+  },
+  {
+    image: "/voucher3.png",
+    title: "MAP Gift Voucher",
+    desc: "Hemat hingga 15% saat berbelanja di jaringan ritel MAP seperti Zara, Starbucks, Sephora, dan lainnya. Voucher berlaku nasional dan dapat digunakan untuk berbagai kategori produk, dari fashion hingga lifestyle premium.",
+  },
+  {
+    image: "/voucher4.png",
+    title: "Voucher Optik 40%",
+    desc: "Dapatkan bonus hingga 40% untuk setiap pembelian lensa, cek kesehatan mataa, dan pembelian lensa dengan kartu kredit tertentu.",
+  },
+  {
+    image: "/voucher5.jpg",
+    title: "Voucher Ultimate Travel",
+    desc: "Nikmati diskon eksklusif 50% untuk berwisata ke destinasi di seluruh Indonesia. Berlaku untuk semua jenis umur, baik anak kecil maupun dewasa, dengan menukarkan qr code voucher di loket masuk destinasi wisata pilihanmu.",
+  },
+  {
+    image: "/voucher6.jpg",
+    title: "Voucher Service Oktober",
+    desc: "Dapatkan diskon 50% untuk layanan servis kendaraan di bengkel resmi selama bulan Oktober. Voucher ini mencakup berbagai jenis kendaraan, mulai dari mobil hingga motor, dan dapat digunakan untuk perawatan rutin maupun perbaikan.",
+  },
+  {
+    image: "/voucher7.jpg",
+    title: "Voucher Cleaning Service",
+    desc: "Dapatkan potongan harga 30% untuk layanan cleaning service rumah atau kantor. Voucher ini berlaku untuk semua paket layanan, termasuk pembersihan rutin, deep cleaning, dan layanan khusus lainnya.",
+  },
 ];
+
 
 const carousel = ref(null);
 const activeIndex = ref(0);
+const selectedVoucher = ref(null);
+
+// Modal
+const openModal = (voucher) => {
+  selectedVoucher.value = voucher;
+};
+const closeModal = () => {
+  selectedVoucher.value = null;
+};
 
 // Geser kanan
 const scrollRight = () => {
@@ -125,12 +192,8 @@ const scrollLeft = () => {
 const getIndicatorClass = (i) => {
   const visibleDots = 5;
   const start = Math.floor(activeIndex.value / visibleDots) * visibleDots;
-  const end = start + visibleDots;
-
   const relativeIndex = activeIndex.value - start;
-  return relativeIndex === i
-    ? "bg-white scale-125"
-    : "bg-gray-500 scale-100";
+  return relativeIndex === i ? "bg-white scale-125" : "bg-gray-500 scale-100";
 };
 
 onMounted(() => {
@@ -155,4 +218,21 @@ onMounted(() => {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
   z-index: 10;
 }
+.fade-zoom-enter-active,
+.fade-zoom-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-zoom-enter-from,
+.fade-zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.fade-zoom-enter-to,
+.fade-zoom-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class=" min-h-screen text-white p-6 py-33">
+  <div class="min-h-screen text-white p-6 py-33">
     <!-- Header -->
     <div class="flex items-center justify-between mb-10 animate-slide-left">
       <button @click="$router.back()" class="flex items-center text-gray-400 hover:text-white transition-colors">
@@ -21,9 +21,16 @@
     <h2 class="text-xl font-semibold mb-4 animate-slide-left">Jalur Belajar</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-      <!-- Financial Fundamentals Card -->
-      <div class="bg-gradient-to-br from-red-400 to-orange-400 rounded-xl p-6 flex flex-col justify-between h-100 cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
-       style="animation-delay: 0.1s">
+      <!-- Financial Fundamentals -->
+      <div
+        class="bg-gradient-to-br from-red-400 to-orange-400 rounded-xl p-6 flex flex-col justify-between cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
+        style="animation-delay: 0.1s"
+        @click="openVoucher(
+          'Financial Fundamentals',
+          'https://www.youtube.com/embed/f9FK2t7ab1A',
+          'Materi ini membahas dasar-dasar keuangan pribadi, seperti perencanaan anggaran, pengelolaan pengeluaran, dan pentingnya dana darurat.'
+        )"
+      >
         <div class="flex flex-col items-center py-3">
           <div class="w-45 h-45">
             <img src="/tabungan-icon.png" alt="">
@@ -31,19 +38,23 @@
           <h3 class="text-black font-bold text-center text-4xl">Financial <br> Fundamentals</h3>
         </div>
         <div class="flex items-center justify-center p-4">
-    <!-- Progress Indicator -->
-    <div class="bg-red-300 h-12 rounded-full px-15 py-3 flex items-center space-x-4">
-      <!-- White Circle -->
-      <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
-      <!-- Percentage Text -->
-      <span class="text-white text-3xl font-bold">75%</span>
-    </div>
-  </div>
+          <div class="bg-red-300 h-12 rounded-full px-15 py-3 flex items-center space-x-4">
+            <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
+            <span class="text-white text-3xl font-bold">75%</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Investasi & Kekayaan Card -->
-      <div class="bg-gradient-to-br from-green-400 to-teal-400 rounded-xl p-6 flex flex-col justify-between h-100 cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
-       style="animation-delay: 0.3s">
+      <!-- Investasi & Kekayaan -->
+      <div
+        class="bg-gradient-to-br from-green-400 to-teal-400 rounded-xl p-6 flex flex-col justify-between cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
+        style="animation-delay: 0.3s"
+        @click="openVoucher(
+          'Investasi & Kekayaan',
+          'https://www.youtube.com/embed/uH00Xt84Jwk',
+          'Pelajari cara membangun kekayaan melalui investasi yang cerdas. Materi ini mencakup konsep ROI, diversifikasi, dan pentingnya mindset jangka panjang.'
+        )"
+      >
         <div class="flex flex-col items-center py-1">
           <div class="w-50 h-50">
             <img src="/invest-icon.png" alt="">
@@ -51,16 +62,21 @@
           <h3 class="text-black font-bold text-center text-4xl relative bottom-5">Investasi & <br> Kekayaan</h3>
         </div>
         <div class="bg-green-300 h-12 w-60 rounded-full px-15 py-3 flex items-center space-x-4 relative left-15">
-      <!-- White Circle -->
-      <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
-      <!-- Percentage Text -->
-      <span class="text-white text-3xl font-bold">75%</span>
+          <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
+          <span class="text-white text-3xl font-bold">75%</span>
         </div>
       </div>
 
-      <!-- Akademi Financial Card -->
-      <div class="bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl p-6 flex flex-col justify-between h-100 cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
-       style="animation-delay: 0.5s">
+      <!-- Akademi Financial -->
+      <div
+        class="bg-gradient-to-br from-purple-400 to-pink-400 rounded-xl p-6 flex flex-col justify-between cursor-pointer hover:opacity-55 transition-opacity opacity-0 animate-slide-up"
+        style="animation-delay: 0.5s"
+        @click="openVoucher(
+          'Akademi Financial',
+          'https://www.youtube.com/embed/-QFzlLfl7IE',
+          'Kelas lanjutan yang membahas strategi perencanaan keuangan profesional dan sertifikasi CFP untuk praktisi finansial masa depan.'
+        )"
+      >
         <div class="flex flex-col items-center py-1">
           <div class="w-50 h-50 ">
             <img src="/akademi-icon.png" alt="">
@@ -68,15 +84,42 @@
           <h3 class="text-black font-bold text-center text-4xl relative bottom-5">Akademi <br> Financial</h3>
         </div>
         <div class="bg-pink-300 h-12 w-60 rounded-full px-15 py-3 flex items-center space-x-4 relative left-15">
-      <!-- White Circle -->
-      <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
-      <!-- Percentage Text -->
-      <span class="text-white text-3xl font-bold">75%</span>
-    </div>
+          <div class="w-10 h-9 bg-white rounded-full relative right-10"></div>   
+          <span class="text-white text-3xl font-bold">75%</span>
+        </div>
       </div>
     </div>
 
-         <!-- Challenge Section -->
+    <!-- POP-UP MATERI -->
+     <Transition name="fade-zoom">
+    <div
+      v-if="selectedVoucher"
+      class="fixed inset-0 bg-[#3b3b3b8e] flex items-center justify-center z-50"
+      @click.self="closeVoucher"
+    >
+      <div class="bg-[#1E1E1E] w-[600px] max-w-full p-6 rounded-xl relative text-center">
+        <h2 class="text-2xl font-bold mb-4 text-green-400">{{ selectedVoucher.title }}</h2>
+        <div class="aspect-video mb-4">
+          <iframe
+            class="w-full h-64 rounded-lg"
+            :src="selectedVoucher.video"
+            title="Materi Video"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <p class="text-gray-300 mb-6 text-left">{{ selectedVoucher.summary }}</p>
+        <button
+          @click="closeVoucher"
+          class="bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg w-full font-bold"
+        >
+          Tutup
+        </button>
+        <button @click="closeVoucher" class="absolute top-3 right-3 text-gray-400 hover:text-white">✕</button>
+      </div>
+    </div>
+    </Transition>
+    <!-- Challenge Section (tidak diubah) -->
     <h2 class="text-xl font-semibold mb-6">Challenge</h2>
 
     <div class="bg-[#1E1E1E] rounded-xl p-6 mb-12">
@@ -108,7 +151,6 @@
       <div class="bg-[#1E1E1E] w-96 p-6 rounded-xl relative">
         <h2 class="text-xl font-bold mb-4 text-center">Kuis Mingguan</h2>
 
-        <!-- Soal -->
         <div v-if="!showResult">
           <h3 class="font-semibold mb-4">Soal {{ currentQuestionIndex + 1 }} dari {{ questions.length }}</h3>
           <p class="mb-4">{{ currentQuestion.question }}</p>
@@ -116,8 +158,7 @@
           <div class="space-y-2">
             <button v-for="(option, index) in currentQuestion.options" :key="index"
               @click="selectAnswer(index)"
-              :class="[
-                'w-full text-left px-4 py-2 rounded-lg border transition-all',
+              :class="[ 'w-full text-left px-4 py-2 rounded-lg border transition-all',
                 selectedAnswer === index
                   ? 'bg-green-500 border-green-400'
                   : 'bg-[#2A2A2A] border-gray-700 hover:bg-gray-700'
@@ -126,7 +167,6 @@
             </button>
           </div>
 
-          <!-- Navigasi -->
           <div class="flex justify-between mt-6">
             <button @click="prevQuestion" :disabled="currentQuestionIndex === 0"
               class="px-4 py-2 bg-gray-600 rounded-lg disabled:opacity-40">Sebelumnya</button>
@@ -138,7 +178,6 @@
           </div>
         </div>
 
-        <!-- Hasil -->
         <div v-else class="text-center">
           <h3 class="text-2xl font-bold mb-4">Skor Kamu</h3>
           <p class="text-4xl text-green-400 font-bold">{{ score }}/{{ questions.length }}</p>
@@ -148,16 +187,12 @@
           </button>
         </div>
 
-        <!-- Tombol Tutup -->
-        <button @click="closeQuiz" class="absolute top-3 right-3 text-gray-400 hover:text-white">
-          ✕
-        </button>
+        <button @click="closeQuiz" class="absolute top-3 right-3 text-gray-400 hover:text-white">✕</button>
       </div>
     </div>
 
-    <!-- Popular Categories Section -->
+    <!-- Kategori dan Materi (tidak diubah) -->
     <h2 class="text-xl font-semibold mb-4">Kategori Populer</h2>
-    
     <div class="flex flex-wrap gap-3 mb-8">
       <button v-for="category in categories" :key="category" 
         class="px-4 py-2 bg-[#1E1E1E] hover:bg-gray-700 rounded-full text-sm transition-colors">
@@ -165,51 +200,22 @@
       </button>
     </div>
 
-    <!-- Latest Materials Section -->
     <h2 class="text-xl font-semibold mb-6">Materi Terbaru</h2>
-    
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <!-- Material 1 -->
-     <div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
-  <iframe
-    class="w-full h-48"
-    src="https://www.youtube.com/embed/SEjjo4FLvsM"
-    title="Akademi Certified Financial Planner"
-    frameborder="0"
-    allowfullscreen
-  ></iframe>
-  <div class="p-4">
-    <h3 class="font-semibold">Akademi Certified Financial Planner</h3>
-  </div>
-</div>
+      <div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
+        <iframe class="w-full h-48" src="https://www.youtube.com/embed/SEjjo4FLvsM" title="Akademi Certified Financial Planner" frameborder="0" allowfullscreen></iframe>
+        <div class="p-4"><h3 class="font-semibold">Akademi Certified Financial Planner</h3></div>
+      </div>
 
-<!-- Material 2 -->
-<div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
-  <iframe
-    class="w-full h-48"
-    src="https://www.youtube.com/embed/C_Khb0Q2gJs"
-    title="Kelas Anti Fomo dan Frugal Life"
-    frameborder="0"
-    allowfullscreen
-  ></iframe>
-  <div class="p-4">
-    <h3 class="font-semibold">Kelas Anti Fomo dan Frugal Life</h3>
-  </div>
-</div>
+      <div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
+        <iframe class="w-full h-48" src="https://www.youtube.com/embed/C_Khb0Q2gJs" title="Kelas Anti Fomo dan Frugal Life" frameborder="0" allowfullscreen></iframe>
+        <div class="p-4"><h3 class="font-semibold">Kelas Anti Fomo dan Frugal Life</h3></div>
+      </div>
 
-<!-- Material 3 -->
-<div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
-  <iframe
-    class="w-full h-48"
-    src="https://www.youtube.com/embed/7gm3f7FHI5c"
-    title="Invest For Gen Z"
-    frameborder="0"
-    allowfullscreen
-  ></iframe>
-  <div class="p-4">
-    <h3 class="font-semibold">Invest For Gen Z</h3>
-  </div>
-</div>
+      <div class="rounded-xl overflow-hidden bg-[#1E1E1E] cursor-pointer hover:opacity-90 transition-opacity">
+        <iframe class="w-full h-48" src="https://www.youtube.com/embed/7gm3f7FHI5c" title="Invest For Gen Z" frameborder="0" allowfullscreen></iframe>
+        <div class="p-4"><h3 class="font-semibold">Invest For Gen Z</h3></div>
+      </div>
     </div>
   </div>
 </template>
@@ -219,66 +225,19 @@ export default {
   name: 'Edukasi',
   data() {
     return {
-      // kategori dari data kamu
       categories: ['Saham', 'Manajemen', 'Trading', 'Psikologi'],
-
-      // data tambahan untuk kuis
       showQuiz: false,
       currentQuestionIndex: 0,
       selectedAnswer: null,
       score: 0,
       showResult: false,
+      selectedVoucher: null,
       questions: [
-        {
-          question: "Apa kepanjangan dari 'ROI' dalam dunia investasi?",
-          options: [
-            "Return On Investment",
-            "Rate Of Interest",
-            "Ratio Of Income",
-            "Revenue On Investment"
-          ],
-          correct: 0
-        },
-        {
-          question: "Instrumen berikut yang termasuk investasi jangka panjang adalah?",
-          options: [
-            "Deposito 1 Bulan",
-            "Reksa Dana Saham",
-            "Tabungan Harian",
-            "E-money"
-          ],
-          correct: 1
-        },
-        {
-          question: "Apa tujuan utama dari diversifikasi investasi?",
-          options: [
-            "Memaksimalkan risiko",
-            "Menghindari pajak",
-            "Mengurangi risiko",
-            "Meningkatkan hutang"
-          ],
-          correct: 2
-        },
-        {
-          question: "Dana darurat idealnya digunakan untuk?",
-          options: [
-            "Investasi saham",
-            "Keadaan darurat",
-            "Liburan tahunan",
-            "Bayar kartu kredit"
-          ],
-          correct: 1
-        },
-        {
-          question: "Apa fungsi utama dari anggaran keuangan pribadi?",
-          options: [
-            "Menambah hutang",
-            "Mengatur pemasukan dan pengeluaran",
-            "Mencatat transaksi teman",
-            "Menentukan bunga tabungan"
-          ],
-          correct: 1
-        }
+        { question: "Apa kepanjangan dari 'ROI' dalam dunia investasi?", options: ["Return On Investment","Rate Of Interest","Ratio Of Income","Revenue On Investment"], correct: 0 },
+        { question: "Instrumen berikut yang termasuk investasi jangka panjang adalah?", options: ["Deposito 1 Bulan","Reksa Dana Saham","Tabungan Harian","E-money"], correct: 1 },
+        { question: "Apa tujuan utama dari diversifikasi investasi?", options: ["Memaksimalkan risiko","Menghindari pajak","Mengurangi risiko","Meningkatkan hutang"], correct: 2 },
+        { question: "Dana darurat idealnya digunakan untuk?", options: ["Investasi saham","Keadaan darurat","Liburan tahunan","Bayar kartu kredit"], correct: 1 },
+        { question: "Apa fungsi utama dari anggaran keuangan pribadi?", options: ["Menambah hutang","Mengatur pemasukan dan pengeluaran","Mencatat transaksi teman","Menentukan bunga tabungan"], correct: 1 }
       ]
     };
   },
@@ -288,70 +247,53 @@ export default {
     }
   },
   methods: {
-    startQuiz() {
-      this.showQuiz = true;
-      this.currentQuestionIndex = 0;
-      this.score = 0;
-      this.selectedAnswer = null;
-      this.showResult = false;
-    },
-    closeQuiz() {
-      this.showQuiz = false;
-    },
-    selectAnswer(index) {
-      this.selectedAnswer = index;
-    },
+    // quiz logic
+    startQuiz() { this.showQuiz = true; this.currentQuestionIndex = 0; this.score = 0; this.selectedAnswer = null; this.showResult = false; },
+    closeQuiz() { this.showQuiz = false; },
+    selectAnswer(index) { this.selectedAnswer = index; },
     nextQuestion() {
-      if (this.selectedAnswer === this.currentQuestion.correct) {
-        this.score++;
-      }
-
+      if (this.selectedAnswer === this.currentQuestion.correct) this.score++;
       if (this.currentQuestionIndex < this.questions.length - 1) {
-        this.currentQuestionIndex++;
-        this.selectedAnswer = null;
-      } else {
-        this.showResult = true;
-      }
+        this.currentQuestionIndex++; this.selectedAnswer = null;
+      } else this.showResult = true;
     },
     prevQuestion() {
       if (this.currentQuestionIndex > 0) {
-        this.currentQuestionIndex--;
-        this.selectedAnswer = null;
+        this.currentQuestionIndex--; this.selectedAnswer = null;
       }
+    },
+
+    // popup video
+    openVoucher(title, video, summary) {
+      this.selectedVoucher = { title, video, summary };
+    },
+    closeVoucher() {
+      this.selectedVoucher = null;
     }
   }
 };
 </script>
 
-
 <style scoped>
-@keyframes slideUp {
-  from {
-    transform: translateY(40px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes slideLeft { from { transform: translateX(-40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.animate-slide-up { animation: slideUp 1s ease-out forwards; }
+.animate-slide-left { animation: slideLeft 0.8s ease-out forwards; }
+.fade-zoom-enter-active,
+.fade-zoom-leave-active {
+  transition: all 0.3s ease;
 }
 
-@keyframes slideLeft {
-  from {
-    transform: translateX(-40px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+.fade-zoom-enter-from,
+.fade-zoom-leave-to {
+  opacity: 0;
+  transform: scale(0.9);
 }
 
-.animate-slide-up {
-  animation: slideUp 1.0s ease-out forwards;
+.fade-zoom-enter-to,
+.fade-zoom-leave-from {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.animate-slide-left {
-  animation: slideLeft 0.8s ease-out forwards;
-}
 </style>
